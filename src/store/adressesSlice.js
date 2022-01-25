@@ -18,8 +18,14 @@ const adressesSlice = createSlice({
     addInterval(state, action) {
       state.timeInterval = action.payload;
     },
-    changeData(state, action) {
-      state.data = action.payload;
+    removeData(state, action) {
+      const adressToRemove = action.payload;
+      state.data = state.data.filter((adress) => {
+        return !(
+          adress.ip === adressToRemove.address &&
+          adress.port === adressToRemove.port
+        );
+      });
     },
     updateData(state, action) {
       const [newData, oldData] = action.payload;

@@ -1,5 +1,5 @@
 export const columns = [
-  { title: "Number", field: "id" },
+  { title: "Number", field: "id", editable: "never" },
   { title: "Address", field: "address" },
   { title: "Port", field: "port", type: "numeric" },
   { title: "Status", field: "status", editable: "never" },

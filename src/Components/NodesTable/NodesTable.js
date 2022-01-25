@@ -13,14 +13,10 @@ const NodesTable = ({ rows }) => {
 
   const handleDelete = () => {
     if (selectedRows) {
-      let buffer = adressesJson.data;
       for (const row of selectedRows) {
-        buffer = adressesJson.data.filter((adress) => {
-          return !(adress.ip + adress.port === row.address + row.port);
-        });
+        dispatch(adressesActions.removeData(row));
       }
 
-      dispatch(adressesActions.changeData(buffer));
       dispatch(adressesActions.addInitail(false));
     }
   };
