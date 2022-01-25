@@ -1,14 +1,13 @@
 import React, { useState } from "react";
 import MaterialTable from "@material-table/core";
 
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { adressesActions } from "../../store/adressesSlice";
 
 import { columns, checkIfValid } from "./TableHelpers";
 
 const NodesTable = ({ rows }) => {
   const [selectedRows, setSelectedRows] = useState([]);
-  const adressesJson = useSelector((state) => state.adresses);
   const dispatch = useDispatch();
 
   const handleDelete = () => {
