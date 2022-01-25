@@ -1,3 +1,4 @@
+@import "/src/index.scss";
 .form {
   margin: 3rem;
   display: grid;
@@ -11,6 +12,9 @@
   box-shadow: 0 0 20px 8px #d0d0d0;
   padding: 2rem;
   height: 40rem;
+  @include respond(phone) {
+    height: 50rem;
+  }
 }
 
 .form_head {
@@ -30,6 +34,9 @@
   border: 1px solid;
   border-color: coral;
   border-width: 1px;
+  @include respond(phone) {
+    font-size: 1rem;
+  }
 }
 
 ::-webkit-input-placeholder {
@@ -45,6 +52,9 @@
   grid-column-end: 3;
   grid-row-start: 2;
   grid-row-end: 3;
+  @include respond(phone) {
+    margin-top: 1rem;
+  }
 }
 
 .labelContainer__port {
@@ -56,6 +66,9 @@
   grid-column-end: 2;
   grid-row-start: 2;
   grid-row-end: 3;
+  @include respond(phone) {
+    margin-top: 1rem;
+  }
 }
 .labelContainer__time {
   margin-top: 5rem;

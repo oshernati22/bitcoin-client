@@ -1,6 +1,6 @@
 import "./App.scss";
 import Logo from "./Assets/logo.jpg";
-import Form from "./Components/Form";
+import Form from "./Components/form/Form";
 
 function App() {
   return (
@@ -14,7 +14,7 @@ function App() {
             </div>
           </div>
         </div>
-        <Form />
+        <Form /> {/* inputs ips & ports to send the server*/}
       </div>
     </>
   );

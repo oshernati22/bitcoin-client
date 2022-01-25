@@ -4,46 +4,42 @@ import IPut from "iput";
 import Select from "react-dropdown-select";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faBold } from "@fortawesome/free-solid-svg-icons";
-import NodesTable from "./NodesTable";
+import { useDispatch } from "react-redux";
+import { adressesActions } from "../../store/adressesSlice";
+import DataHandler from "./DataHandler";
+import { useSelector } from "react-redux";
+import { switcherActions } from "../../store/switcherSlice";
+
+//data picker options
 const options = [
   { value: "5", label: "5 Minutes" },
   { value: "10", label: "10 Minutes" },
   { value: "15", label: "15 Minutes" },
 ];
+
 const Form = () => {
+  //inputs data of the form
   const [ip, setIp] = useState();
   const [port, setPort] = useState();
   const [interval, setInterval] = useState();
-  const [switcher, setswitcher] = useState(false);
-  const [adressesJson, setAdressesJson] = useState({
-    timeInterval: 5,
-    initial: true,
-    data: [],
-  });
 
+  //global states
+  const dispatch = useDispatch();
+  const adressesJson = useSelector((state) => state.adresses.data);
+  const switcher = useSelector((state) => state.switcher.switcher);
+
+  //make adress lists
   const handleAddBtn = (event) => {
     event.preventDefault();
-
-    setAdressesJson((prevState) => {
-      return {
-        timeInterval: prevState.timeInterval,
-        initial: prevState.initial,
-        data: [...prevState.data, { ip: ip, port: port }],
-      };
-    });
+    dispatch(adressesActions.addAdressesData({ ip, port }));
   };
 
+  //after submit fill the json data to the server and show dataHandler
   const handleSubmit = (event) => {
     event.preventDefault();
-    if (interval && adressesJson.data.length > 0) {
-      setAdressesJson((prevState) => {
-        return {
-          timeInterval: interval,
-          initial: prevState.initial,
-          data: [...prevState.data],
-        };
-      });
-      setswitcher(true);
+    if (interval && adressesJson.length > 0) {
+      dispatch(adressesActions.addInterval(interval));
+      dispatch(switcherActions.changeMode());
     } else {
       alert("please select interval/ip ");
     }
@@ -65,9 +61,10 @@ const Form = () => {
             type="number"
             min="0"
             max="65535"
+            /*if port not valid zero the value*/
             onChange={(e) => {
               let port = e.target.value;
-              if (port > 65535) port = 0;
+              if (port > 65535) e.target.value = 0;
               setPort(port);
             }}
           />
@@ -82,30 +79,30 @@ const Form = () => {
             onChange={(interval) => setInterval(interval[0].value)}
           />
         </div>
-        <button type="submit" className="button">
+        <button type="submit" disabled={switcher} className="button">
           {" "}
           {/*after click start show data */}
           <FontAwesomeIcon className="icon" icon={faBold} spin={switcher} />
         </button>
-        <button onClick={handleAddBtn} className="addButton">
+        <button
+          onClick={handleAddBtn}
+          disabled={switcher}
+          className="addButton"
+        >
           add to Adresses list{" "}
         </button>
         <div className="labelContainer__adresses">
-          {adressesJson.data.map((adress) => {
+          {/*show all the adress that the user fill*/}
+          {adressesJson.map((adress) => {
             return (
-              <p key={adress.ip}>
+              <p key={adress.ip + adress.port}>
                 {adress.ip}: {adress.port}
               </p>
             );
           })}
         </div>
       </form>
-      {switcher && (
-        <NodesTable
-          setAdressesJson={setAdressesJson}
-          adressesJson={adressesJson}
-        />
-      )}
+      {switcher && <DataHandler />}
     </>
   );
 };
